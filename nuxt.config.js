@@ -2,6 +2,8 @@ module.exports = {
   /*
   ** Headers of the page
   */
+
+  
   head: {
     title: 'hda',
     meta: [
@@ -39,7 +41,12 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    vendor: ['vuetify']
+    babel: {
+      presets: ['es2015', 'stage-2'],
+      plugins: ['transform-runtime']
+    },
+    extactCSS: true,
+    vendor: ['babel-polyfill','vuetify']
     /*
     ** Run ESLint on save
     */

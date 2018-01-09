@@ -7,24 +7,51 @@
   
         <h1 class="text-xs-center mt-2 pt-2">Create New User </h1>
         <form>
-          <v-layout justify-center mt-5 pt-5>
+          <v-layout justify-center mt-3 pt-3>
   
             <v-card width=600>
               <v-card-text>
                 <v-layout row wrap>
                   <v-flex xs12 sm6 pr-5>
-                    <v-text-field name="Name " label="Name" hint="Please insert Name"></v-text-field>
+                    <v-text-field name="FirstName " v-model="un.firstname" label="First Name" hint="Please insert Name"></v-text-field>
                   </v-flex>
   
                   <v-flex xs12 sm6 pr-5>
-                    <v-text-field name="Surname" label="Surname"></v-text-field>
+                    <v-text-field name="Surname" v-model="un.lastname" label="Surname"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 pr-5>
-                    <v-text-field name="Username" label="Username"></v-text-field>
+                    <v-text-field name="Username" v-model="un.username" label="Username"></v-text-field>
                   </v-flex>
-  
-  
+
+                   <v-flex xs12 sm6 pr-5>
+                    <v-text-field name="Company" v-model="un.company" label="Company"></v-text-field>
+                  </v-flex>
+
+                  
                   <v-flex xs12 sm6 pr-5>
+                    <v-text-field name="Department" v-model="un.department" label="Department"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 pr-5>
+                    <v-text-field name="Job" v-model="un.job" label="Job"></v-text-field>
+                  </v-flex>
+
+                  <v-flex xs12 sm6 pr-5>
+                    <v-text-field name="Description" v-model="un.description" label="Description"></v-text-field>
+                  </v-flex>
+                 
+  
+   <v-flex xs12 sm6 pr-5>
+                    <v-text-field name="Office" v-model="un.office" label="Office"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 pr-5>
+                     <v-select v-bind:items="results" v-model="a1" label="Manager" autocomplete></v-select>
+                  </v-flex>
+
+
+                  
+  
+  
+      <!--            <v-flex xs12 sm6 pr-5>
                     <v-select v-bind:items="items" v-model="e1" label="Select" dark item-value="text"></v-select>
                   </v-flex>
   
@@ -34,10 +61,13 @@
   
                   <v-flex xs12 sm6 pr-5>
                     <v-select v-bind:items="states" v-model="a1" label="Select" autocomplete></v-select>
-                  </v-flex>
-                  <v-btn @click="submit">submit</v-btn>
-                  <v-btn @click="clear">clear</v-btn>
+                  </v-flex> -->
+
+
+                  
                 </v-layout>
+                <v-btn @click.prevent="addUser">submit</v-btn>
+                  <v-btn @click="clear">clear</v-btn>
               </v-card-text>
             </v-card>
           </v-layout>
@@ -56,10 +86,15 @@
 
 
 <script>
+
+import axios from 'Axios'
+
+
   export default {
     layout: 'default',
     data() {
       return {
+        results: [],
         e1: null,
         e2: null,
         e3: null,
@@ -148,9 +183,85 @@
           "West Virginia",
           "Wisconsin",
           "Wyoming"
-        ]
+        ],
+
+         un: {
+        value: '',
+        rawValue: '',
+        firstname: '',
+      lastname:'',
+      username:'',
+    //  selected: 'Permanent',
+      date:'',
+      company:'',
+      job:'',
+      title:'',
+      description:'',
+      department:'',
+      office:'',
+      manager:'',
+      picked:'One',
+      man:'',
+      dspl: true,
+      seen:true
+      }
   
       }
+    },
+
+     mounted() {
+    axios.get("http://localhost:3000/api/adUsers")
+    .then(response => {this.results = response.data;
+    console.log(this.results);
+    
+    
+    })
+
+    
+  },
+
+    methods: {
+
+       addUser() {
+
+
+
+
+
+           axios.post('http://dst00649:3000/api/adUsers', {"username": this.un.username,
+   "company": this.un.company,
+   "firstName": this.un.firstname,
+   "lastName": this.un.lastname,
+   "department": this.un.department,
+   "description": this.un.description,
+   "office": this.un.office,
+   "manager": this.un.manager,
+   "job": this.un.job}
+
+).then(
+  (response) => {
+      console.log(response)
+  
+
+
+
+   })
+   .catch(error => {
+ console.log(error.response)
+ 
+
+
+    
+   });
+
+
+
+
+  }
+
+
+
+
     }
   
   }
